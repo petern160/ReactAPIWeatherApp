@@ -1,26 +1,79 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// {dont have to put React.Component}
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { Component } from "react";
+import Titles from "./components/Titles";
+import Form from "./components/Form";
+import Weather  from "./components/Weather"
+
+// api key from apiweather
+const API_KEY = '050badc8a764c0398d3a0417c72737aa'
+
+class App extends Component {
+  // can just do state no need for constructor and super
+  state = {
+    temperature: undefined,
+    city: undefined,
+    country: undefined,
+    humidity: undefined,
+    description: undefined,
+    error: undefined,
+  };
+
+  // arrow function no need for binds
+  // async await makes http calls easy
+  getWeather = async (e) => {
+    // prevents page reload when you press get weather button
+    e.preventDefault()
+    // targets the form input with the correct name
+    const city = e.target.elements.city.value;
+    const country = e.target.elements.country.value;
+    const api_call = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`)
+    // converts to json for fetch api
+    const data = await api_call.json()
+    // console.log(data)
+
+    //  if city and country value added then render out the state
+    if(city && country) {
+    // updates state from undefined accordingly
+    this.setState ({
+      temperature: data.main.temp,
+      city: data.name,
+      country: data.sys.country,
+      humidity: data.main.humidity,
+      description: data.weather[0].description,
+      error : '',
+    })
+// error handles values
+  }else {
+    this.setState ({
+      temperature: undefined,
+      city: undefined,
+      country: undefined,
+      humidity: undefined,
+      description: undefined,
+      error: 'Please Enter Proper Values',
+    })
+  }
+}
+
+
+  render() {
+    return (
+      <div>
+        <Titles />
+        {/* passes props down*/}
+        <Form getWeather ={this.getWeather}/>
+        <Weather 
+        temperature={this.state.temperature}
+        city={this.state.city}
+        country={this.state.country}
+        humidity={this.state.humidity}
+        description={this.state.description}
+        error={this.state.error}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
