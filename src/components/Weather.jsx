@@ -2,17 +2,17 @@ import React, { Component } from "react";
 // cannot use this keyword because it is not a class anymore
 // instead pass props into parameter
 const Weather = props => (
-  <div>
+  <div className="weather__info">
     {/* truthy and truthy will render the latest truthy */}
     {props.city && props.country && (
-      <p>
-        Location: {props.city}, {props.country}
+      <p className="weather__key">
+        Location: <span className="weather__value">{props.city}, {props.country}</span>
       </p>
     )}
-    {props.temperature && <p> Temperature: {props.temperature}</p>}
-    {props.humidity && <p> Humidity: {props.humidity}</p>}
-    {props.description && <p>Conditions: {props.description}</p>}
-    {props.error && <p> {props.error}</p>}
+    {props.temperature && <p className="weather__key"> Temperature:<span className="weather__value"> {props.temperature}</span></p>}
+    {props.humidity && <p className="weather__key"> Humidity:<span className="weather__value"> {props.humidity}</span></p>}
+    {props.description && <p className="weather__key">Conditions:<span className="weather__value"> {props.description}</span></p>}
+    {props.error && <p className="weather__key"> {props.error}</p>}
   </div>
 );
 

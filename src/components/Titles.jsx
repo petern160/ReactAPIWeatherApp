@@ -3,8 +3,8 @@ import React, { Component } from "react";
 const Titles = () => {
   return (
     <div>
-      <h1>Weather Finder</h1>
-      <p>find out temperature conditions and more</p>
+      <h1 className="title-container__title">Weather Finder</h1>
+      <p className="title-container__subtitle">find out temperature conditions and more</p>
     </div>
   );
 };
